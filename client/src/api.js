@@ -1,4 +1,4 @@
-const BASE = '/api/tasks';
+const BASE = `${import.meta.env.VITE_API_URL || ''}/api/tasks`;
 
 export const fetchTasks = () => fetch(BASE).then(r => r.json());
 

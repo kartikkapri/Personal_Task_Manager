@@ -11,7 +11,7 @@ A full-stack task management app that lets you create, view, edit, delete, and f
 | | URL |
 |---|---|
 | Frontend | `https://<your-frontend-deployment-url>` |
-| Backend API | `https://<your-backend-deployment-url>` |
+| Backend API | `https://personal-task-manager-sirz.onrender.com` |
 
 ---
 
