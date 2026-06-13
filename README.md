@@ -1,181 +1,96 @@
 # Personal Task Manager
 
-**Exercise 1: Personal Task Manager**
-
-A full-stack task management app that lets you create, view, edit, delete, and filter tasks. Tasks persist across server restarts via a local JSON file. The UI highlights overdue tasks, shows live active/completed counts, and provides context-aware empty states.
+Exercise 1 — a simple full-stack app to manage your daily tasks. You can add, edit, delete, and filter tasks. Overdue tasks get highlighted automatically and everything saves to a JSON file so nothing is lost on restart.
 
 ---
 
-## Live Demo Links
+## Live Demo
 
 | | URL |
 |---|---|
-| Frontend | `https://gleaming-strudel-431a1e.netlify.app` |
-| Backend API | `https://personal-task-manager-sirz.onrender.com` |
+| Frontend | https://gleaming-strudel-431a1e.netlify.app |
+| Backend | https://personal-task-manager-sirz.onrender.com |
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Runtime | Node.js |
-| Backend Framework | Express |
-| Frontend | React (Vite) |
-| Persistence | Local JSON file (`server/tasks.json`) |
+- Node.js + Express (backend)
+- React + Vite (frontend)
+- JSON file for storage (no database needed)
 
 ---
 
-## How to Run Locally
+## Running Locally
 
-The only prerequisite is [Node.js](https://nodejs.org/) (v18+).
+You just need Node.js (v18+) installed.
 
-**1. Clone the repository**
 ```bash
-git clone https://github.com/<your-username>/personal-task-manager.git
-cd personal-task-manager
+# clone the repo
+git clone https://github.com/kartikkapri/Personal_Task_Manager.git
+cd Personal_Task_Manager
 ```
 
-**2. Start the backend**
 ```bash
+# start backend
 cd server
 npm install
 npm start
 ```
-Server runs on `http://localhost:5000`
 
-**3. Start the frontend** (new terminal)
 ```bash
+# start frontend (new terminal)
 cd client
 npm install
 npm run dev
 ```
-App runs on `http://localhost:3000`
 
-> The Vite dev server proxies all `/api/*` requests to `localhost:5000` automatically — no environment variables needed.
+Frontend runs on `http://localhost:3000`, backend on `http://localhost:5000`. The Vite proxy handles the `/api` requests automatically so no extra config needed.
 
 ---
 
-## API Documentation
+## API Endpoints
 
 Base URL: `http://localhost:5000`
 
-All request and response bodies are JSON.
-
----
-
-### GET /api/tasks
-
-Fetch all tasks sorted by creation date, newest first.
-
-**Response `200`**
+**GET /api/tasks** — get all tasks, newest first
 ```json
-[
-  {
-    "id": "uuid",
-    "title": "Buy groceries",
-    "description": "Milk, eggs, bread",
-    "dueDate": "2025-07-20",
-    "completed": false,
-    "createdAt": "2025-07-18T10:00:00.000Z"
-  }
-]
+[{ "id": "uuid", "title": "...", "description": "...", "dueDate": "2025-07-20", "completed": false, "createdAt": "..." }]
 ```
 
----
-
-### POST /api/tasks
-
-Create a new task.
-
-**Request Body**
+**POST /api/tasks** — create a task (`title` required)
 ```json
-{
-  "title": "Buy groceries",
-  "description": "Milk, eggs, bread",
-  "dueDate": "2025-07-20"
-}
+{ "title": "Buy groceries", "description": "Milk, eggs", "dueDate": "2025-07-20" }
 ```
+Returns `201` with the created task, `400` if title is missing.
 
-| Field | Required | Type |
-|---|---|---|
-| `title` | Yes | string |
-| `description` | No | string |
-| `dueDate` | No | string (YYYY-MM-DD) |
-
-**Response `201`**
+**PATCH /api/tasks/:id** — update any field
 ```json
-{
-  "id": "uuid",
-  "title": "Buy groceries",
-  "description": "Milk, eggs, bread",
-  "dueDate": "2025-07-20",
-  "completed": false,
-  "createdAt": "2025-07-18T10:00:00.000Z"
-}
+{ "completed": true }
 ```
+Returns `200` with updated task, `404` if not found.
 
-**Response `400`** — if `title` is missing
-```json
-{ "error": "title is required" }
-```
-
----
-
-### PATCH /api/tasks/:id
-
-Update any field of an existing task. Send only the fields you want to change.
-
-**Request Body** (all fields optional)
-```json
-{
-  "title": "Buy groceries and cook",
-  "description": "Updated list",
-  "dueDate": "2025-07-21",
-  "completed": true
-}
-```
-
-**Response `200`** — returns the full updated task object
-
-**Response `404`**
-```json
-{ "error": "Task not found" }
-```
-
----
-
-### DELETE /api/tasks/:id
-
-Delete a task by ID.
-
-**Response `204`** — no body
-
-**Response `404`**
-```json
-{ "error": "Task not found" }
-```
+**DELETE /api/tasks/:id** — delete a task
+Returns `204`, `404` if not found.
 
 ---
 
 ## Project Structure
 
 ```
-personal-task-manager/
+Personal_Task_Manager/
 ├── client/
 │   ├── index.html
-│   ├── package.json
 │   ├── vite.config.js
 │   └── src/
-│       ├── main.jsx        # React entry point
-│       ├── App.jsx         # Root component: form, filters, task list, stats
-│       ├── useTasks.js     # Custom hook: all state, API calls, filter logic
-│       ├── api.js          # Thin fetch wrappers for each endpoint
-│       └── index.css       # All styles
+│       ├── main.jsx
+│       ├── App.jsx
+│       ├── useTasks.js
+│       ├── api.js
+│       └── index.css
 └── server/
-    ├── package.json
-    ├── server.js           # Express app + all route handlers
-    └── tasks.json          # Flat-file persistence (auto-created)
+    ├── server.js
+    └── tasks.json
 ```
 
 ---
@@ -183,15 +98,19 @@ personal-task-manager/
 ## Next Steps
 
 ### What works
-- [ ] Add what is fully functional in your submission
+- Create, edit, delete tasks
+- Mark tasks as complete/incomplete
+- Filter by All, Active, Completed
+- Overdue task highlighting
+- Live active/completed count
+- Data persists across server restarts
 
 ### What doesn't work / known issues
-- [ ] Add any known bugs or incomplete features
+- No user auth — tasks are shared across everyone
+- No input sanitization on the backend
 
-### What I would improve with more time
-- [ ] Replace flat JSON file with a proper database (e.g. SQLite or MongoDB)
-- [ ] Add user authentication so tasks are scoped per user
-- [ ] Add drag-and-drop task reordering
-- [ ] Write unit tests for the API routes and the `useTasks` hook
-- [ ] Add toast notifications instead of `window.confirm` / `alert`
-- [ ] Deploy frontend to Vercel and backend to Render
+### What I'd improve with more time
+- Swap JSON file for a real database (MongoDB or SQLite)
+- Add user login so tasks are private
+- Toast notifications instead of `window.confirm`
+- Write tests for the API and the `useTasks` hook
