@@ -10,7 +10,7 @@ A full-stack task management app that lets you create, view, edit, delete, and f
 
 | | URL |
 |---|---|
-| Frontend | `https://<your-frontend-deployment-url>` |
+| Frontend | `https://gleaming-strudel-431a1e.netlify.app` |
 | Backend API | `https://personal-task-manager-sirz.onrender.com` |
 
 ---
